@@ -32,7 +32,7 @@ function onSubmitForm(e) {
 function onLoad(e) {
   const savedData = localStorage.getItem(STORAGE_KEY);
   const parsedData = JSON.parse(savedData);
-  if (parsedData === 0) {
+  if (!localStorage.hasOwnProperty(STORAGE_KEY)) {
     return;
   } else {
     const formElements = form.elements;
