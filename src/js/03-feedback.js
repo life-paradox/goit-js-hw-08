@@ -10,15 +10,17 @@ form.addEventListener('input', throttle(onInputForm, 500));
 function onInputForm(e) {
   e.preventDefault();
 
-  const formElements = e.currentTarget.elements;
+  const formElements = form.elements;
   const mailValue = formElements.email.value;
   const messageValue = formElements.message.value;
 
   formData.email = mailValue;
   formData.message = messageValue;
+
   localStorage.setItem(STORAGE_KEY, JSON.stringify(formData));
   const savedData = localStorage.getItem(STORAGE_KEY);
   const parsedData = JSON.parse(savedData);
+
   console.log(parsedData);
 }
 
@@ -30,19 +32,9 @@ function onSubmitForm(e) {
   console.log(parsedData);
 
   e.target.reset();
+  localStorage.removeItem(STORAGE_KEY);
 }
 
-// function onLoad(e) {
-//   const savedData = localStorage.getItem(STORAGE_KEY);
-//   const parsedData = JSON.parse(savedData);
-//   if (!localStorage.hasOwnProperty(STORAGE_KEY)) {
-//     return;
-//   } else {
-//     const formElements = form.elements;
-//     formElements.email.value = parsedData.email;
-//     formElements.message.value = parsedData.message;
-//   }
-// }
 function onLoad() {
   const savedData = localStorage.getItem(STORAGE_KEY);
   const parsedData = JSON.parse(savedData);
