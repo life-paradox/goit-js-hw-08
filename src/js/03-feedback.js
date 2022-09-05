@@ -5,7 +5,7 @@ const formData = {};
 
 window.addEventListener('DOMContentLoaded', onLoad);
 form.addEventListener('submit', onSubmitForm);
-form.addEventListener('input', onInputForm);
+form.addEventListener('input', throttle(onInputForm, 500));
 
 function onInputForm(e) {
   e.preventDefault();
@@ -16,12 +16,15 @@ function onInputForm(e) {
 
   formData.email = mailValue;
   formData.message = messageValue;
+  localStorage.setItem(STORAGE_KEY, JSON.stringify(formData));
+  const savedData = localStorage.getItem(STORAGE_KEY);
+  const parsedData = JSON.parse(savedData);
+  console.log(parsedData);
 }
 
 function onSubmitForm(e) {
   e.preventDefault();
 
-  localStorage.setItem(STORAGE_KEY, JSON.stringify(formData));
   const savedData = localStorage.getItem(STORAGE_KEY);
   const parsedData = JSON.parse(savedData);
   console.log(parsedData);
@@ -29,14 +32,24 @@ function onSubmitForm(e) {
   e.target.reset();
 }
 
-function onLoad(e) {
+// function onLoad(e) {
+//   const savedData = localStorage.getItem(STORAGE_KEY);
+//   const parsedData = JSON.parse(savedData);
+//   if (!localStorage.hasOwnProperty(STORAGE_KEY)) {
+//     return;
+//   } else {
+//     const formElements = form.elements;
+//     formElements.email.value = parsedData.email;
+//     formElements.message.value = parsedData.message;
+//   }
+// }
+function onLoad() {
   const savedData = localStorage.getItem(STORAGE_KEY);
   const parsedData = JSON.parse(savedData);
-  if (!localStorage.hasOwnProperty(STORAGE_KEY)) {
-    return;
-  } else {
+  if (savedData) {
     const formElements = form.elements;
     formElements.email.value = parsedData.email;
     formElements.message.value = parsedData.message;
+    return;
   }
 }
